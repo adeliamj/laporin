@@ -1,0 +1,67 @@
+.custom-marker > div {
+  position: relative;
+  padding: 8px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px; /* Default font size */
+  width: fit-content;
+  border: 1px solid transparent;
+  filter: drop-shadow(0 0 2px rgba(209, 209, 209, 0.85));
+  height: 32px;
+}
+
+@media (min-width: 1729px) {
+  .custom-marker > div {
+    padding: calc((8 / var(--fluid-base)) * 100vw);
+    border-radius: calc((8 / var(--fluid-base)) * 100vw);
+    font-size: calc((14 / var(--fluid-base)) * 100vw);
+    border-width: calc((1 / var(--fluid-base)) * 100vw);
+    height: calc((32 / var(--fluid-base)) * 100vw);
+    filter: drop-shadow(0 0 calc((2 / var(--fluid-base)) * 100vw) rgba(209, 209, 209, 0.85));
+  }
+}
+
+.custom-marker div p {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 1729px) {
+  .custom-marker div p {
+    font-size: calc((14 / var(--fluid-base)) * 100vw);
+    line-height: calc((20 / var(--fluid-base)) * 100vw);
+  }
+}
+
+.custom-marker > div > div {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (min-width: 1729px) {
+  .custom-marker > div > div {
+    bottom: calc((-8 / var(--fluid-base)) * 100vw);
+  }
+}
+
+.custom-marker > div > div > .triangle {
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 13px 8px 0 8px;
+  transform: rotate(0deg);
+}
+
+@media (min-width: 1729px) {
+  .custom-marker > div > div > .triangle {
+    border-width: calc((13 / var(--fluid-base)) * 100vw) calc((8 / var(--fluid-base)) * 100vw) 0
+      calc((8 / var(--fluid-base)) * 100vw);
+  }
+}
