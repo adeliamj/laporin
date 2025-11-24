@@ -20,14 +20,12 @@ function KasusPageInner() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState({ korban_id: "", status_kasus: "open" });
 
-  // Ambil data korban
   async function fetchKorban() {
     const res = await fetch("/api/korban");
     const data = await res.json();
     setKorbanList(data);
   }
 
-  // Ambil data kasus
   async function fetchKasus() {
     const res = await fetch("/api/kasus");
     const data = await res.json();
@@ -44,7 +42,7 @@ function KasusPageInner() {
   }
 
   function handleSelectKasus(id: number) {
-    const k = kasusList.find(k => k.id === id);
+    const k = kasusList.find((k) => k.id === id);
     if (!k) return;
     setEditingId(id);
     setForm({
@@ -60,7 +58,7 @@ function KasusPageInner() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        status_kasus: form.status_kasus, // Hanya update status
+        status_kasus: form.status_kasus,
       }),
     });
 
@@ -70,96 +68,105 @@ function KasusPageInner() {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-semibold mb-4">Kelola Kasus</h1>
+    <div className="min-h-screen w-full text-blue-600 flex flex-col pt-24">
+      {/* TITLE */}
+      <h1 className="text-3xl font-bold mb-6 text-center">Kelola Kasus</h1>
 
-      {/* Pilih kasus untuk diedit */}
-      {kasusList.length > 0 && (
-        <div className="mb-4">
-          <label className="block text-sm mb-1">Pilih Kasus untuk Edit</label>
-          <select
-            className="border px-2 py-1 rounded w-full"
-            value={editingId ?? ""}
-            onChange={e => handleSelectKasus(Number(e.target.value))}
-          >
-            <option value="">-- Pilih Kasus --</option>
-            {kasusList.map(k => (
-              <option key={k.id} value={k.id}>
-                ID {k.id} - {k.jenis_kasus} ({k.nama_korban})
+      {/* Form */}
+      <div className="max-w-4xl mx-auto mb-8 space-y-6 w-full px-6">
+        {kasusList.length > 0 && (
+          <div>
+            <label className="block text-sm mb-2">Pilih Kasus untuk Edit</label>
+            <select
+              className="w-full border border-blue-700 px-3 py-2 rounded-lg text-blue-600"
+              value={editingId ?? ""}
+              onChange={(e) => handleSelectKasus(Number(e.target.value))}
+            >
+              <option value="" className="text-blue-600">
+                -- Pilih Kasus --
               </option>
-            ))}
-          </select>
-        </div>
-      )}
+              {kasusList.map((k) => (
+                <option key={k.id} value={k.id} className="text-blue-600">
+                  ID {k.id} - {k.jenis_kasus} ({k.nama_korban})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
-      {/* Form edit status */}
-      {editingId && (
-        <div className="mb-6 p-4 rounded border">
-          <h2 className="text-lg font-semibold mb-2">
-            Edit Kasus ID: {editingId}
-          </h2>
+        {editingId && (
+          <div>
+            <h2 className="text-xl font-semibold mb-3">
+              Edit Kasus ID: {editingId}
+            </h2>
 
-          {/* Status kasus */}
-          <div className="mb-2">
-            <label className="block text-sm">Status Kasus</label>
+            <label className="block text-sm mb-2">Status Kasus</label>
             <select
               name="status_kasus"
               value={form.status_kasus}
               onChange={handleChange}
-              className="border px-2 py-1 rounded w-full"
+              className="w-full border border-blue-700 px-3 py-2 rounded-lg mb-4 text-blue-600"
             >
-              <option value="open">Open</option>
-              <option value="in_progress">In Progress</option>
-              <option value="closed">Closed</option>
+              <option value="open" className="text-blue-600">
+                Open
+              </option>
+              <option value="in_progress" className="text-blue-600">
+                In Progress
+              </option>
+              <option value="closed" className="text-blue-600">
+                Closed
+              </option>
             </select>
+
+            <button
+              onClick={handleUpdate}
+              className="px-6 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 transition shadow-lg text-white"
+            >
+              Update
+            </button>
           </div>
+        )}
+      </div>
 
-          <button
-            onClick={handleUpdate}
-            className="px-4 py-2 rounded bg-black text-white"
-          >
-            Update
-          </button>
-        </div>
-      )}
-
-      {/* Tabel kasus */}
-      <table className="w-full border text-sm">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border px-2 py-1">ID</th>
-            <th className="border px-2 py-1">Korban</th>
-            <th className="border px-2 py-1">Jenis Kasus</th>
-            <th className="border px-2 py-1">Tanggal</th>
-            <th className="border px-2 py-1">Status</th>
-            <th className="border px-2 py-1">Ringkasan</th>
-          </tr>
-        </thead>
-        <tbody>
-          {kasusList.length > 0 ? (
-            kasusList.map((k) => (
-              <tr key={k.id}>
-                <td className="border px-2 py-1">{k.id}</td>
-                <td className="border px-2 py-1">{k.nama_korban}</td>
-                <td className="border px-2 py-1">{k.jenis_kasus}</td>
-                <td className="border px-2 py-1">
-                  {k.tanggal_kejadian?.slice(0, 10) || "-"}
-                </td>
-                <td className="border px-2 py-1">{k.status_kasus}</td>
-                <td className="border px-2 py-1 max-w-xs truncate">
-                  {k.ringkasan}
+      {/* TABEL */}
+      <div className="overflow-x-auto max-w-6xl mx-auto rounded-xl border border-blue-700 shadow-lg w-full px-6 mb-10">
+        <table className="w-full text-sm text-blue-600 border-collapse">
+          <thead>
+            <tr>
+              <th className="px-3 py-2 border-b border-blue-700">ID</th>
+              <th className="px-3 py-2 border-b border-blue-700">Korban</th>
+              <th className="px-3 py-2 border-b border-blue-700">Jenis Kasus</th>
+              <th className="px-3 py-2 border-b border-blue-700">Tanggal</th>
+              <th className="px-3 py-2 border-b border-blue-700">Status</th>
+              <th className="px-3 py-2 border-b border-blue-700">Ringkasan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {kasusList.length > 0 ? (
+              kasusList.map((k) => (
+                <tr key={k.id} className="border-t border-blue-700">
+                  <td className="px-3 py-2">{k.id}</td>
+                  <td className="px-3 py-2">{k.nama_korban}</td>
+                  <td className="px-3 py-2">{k.jenis_kasus}</td>
+                  <td className="px-3 py-2">
+                    {k.tanggal_kejadian?.slice(0, 10) || "-"}
+                  </td>
+                  <td className="px-3 py-2 capitalize">
+                    {k.status_kasus.replace("_", " ")}
+                  </td>
+                  <td className="px-3 py-2 max-w-xs truncate">{k.ringkasan}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="text-center py-3">
+                  Belum ada data
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={6} className="text-center py-2">
-                Belum ada data
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

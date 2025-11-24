@@ -6,100 +6,53 @@ import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
-  const role = (session?.user as any)?.role;
   const pathname = usePathname();
 
   const isLoggedIn = status === "authenticated";
+  const role = (session?.user as any)?.role;
+
+  const menuItem = (href: string, label: string) => (
+    <Link
+      href={href}
+      className={`
+        px-4 py-2 rounded-8 text-normal-medium transition
+        ${
+          pathname === href
+            ? "bg-white text-blue-100"      // ACTIVE (clicked)
+            : "text-white hover:bg-blue-40" // DEFAULT (not clicked)
+        }
+      `}
+    >
+      {label}
+    </Link>
+  );
 
   return (
-    <nav className="w-full border-b bg-white px-6 py-3 flex items-center justify-between">
-      {/* Kiri: brand */}
-      <div className="text-lg font-bold">
-        <Link href="/">Laporin</Link>
-      </div>
+    <nav className="w-full bg-[#08172e] shadow-sm px-24 py-12 flex justify-between items-center sticky top-0 z-50">
+      
+      {/* Brand */}
+      <Link href="/" className="text-heading-5 font-bold text-white/90">
+        Laporin
+      </Link>
 
-      {/* Kanan: menu */}
-      <div className="flex items-center gap-4 text-sm">
+      {/* Menu */}
+      <div className="flex items-center gap-6">
         {!isLoggedIn && (
           <>
-            {/* SEBELUM LOGIN */}
-            <Link
-              href="/register"
-              className={`hover:underline ${
-                pathname === "/register" ? "font-semibold" : ""
-              }`}
-            >
-              Register
-            </Link>
-            <Link
-              href="/login"
-              className={`hover:underline ${
-                pathname === "/login" ? "font-semibold" : ""
-              }`}
-            >
-              Login
-            </Link>
+            {menuItem("/register", "Register")}
+            {menuItem("/login", "Login")}
           </>
         )}
 
-        {isLoggedIn && role === "user" && (
+        {isLoggedIn && (
           <>
-            {/* SESUDAH LOGIN - USER */}
-            <Link
-              href="/user/lapor"
-              className={`hover:underline ${
-                pathname.startsWith("/user/lapor") ? "font-semibold" : ""
-              }`}
-            >
-              Lapor
-            </Link>
-            <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
-              className="border rounded px-3 py-1"
-            >
-              Logout
-            </button>
-          </>
-        )}
+            {menuItem("/dashboard", "Dashboard")}
 
-        {isLoggedIn && role === "admin" && (
-          <>
-            {/* SESUDAH LOGIN - ADMIN */}
-            <Link
-              href="/admin/korban"
-              className={`hover:underline ${
-                pathname.startsWith("/admin/korban") ? "font-semibold" : ""
-              }`}
-            >
-              Korban
-            </Link>
-            <Link
-              href="/admin/kasus"
-              className={`hover:underline ${
-                pathname.startsWith("/admin/kasus") ? "font-semibold" : ""
-              }`}
-            >
-              Kasus
-            </Link>
-            <Link
-              href="/admin/barang-bukti"
-              className={`hover:underline ${
-                pathname.startsWith("/admin/barang-bukti") ? "font-semibold" : ""
-              }`}
-            >
-              Barang Bukti
-            </Link>
-            <Link
-              href="/admin/tindakan"
-              className={`hover:underline ${
-                pathname.startsWith("/admin/tindakan") ? "font-semibold" : ""
-              }`}
-            >
-              Tindakan
-            </Link>
+            {role === "admin" && menuItem("/admin", "Admin Panel")}
+
             <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
-              className="border rounded px-3 py-1"
+              onClick={() => signOut()}
+              className="px-8 py-4 rounded-6 bg-blue-80 text-white hover:bg-blue-60 transition text-normal-medium"
             >
               Logout
             </button>
