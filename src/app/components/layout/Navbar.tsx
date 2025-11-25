@@ -52,7 +52,7 @@ export default function Navbar() {
 
             <button
               onClick={() => signOut()}
-              className="px-8 py-4 rounded-6 bg-blue-80 text-white hover:bg-blue-60 transition text-normal-medium"
+              className="px-8 py-4 rounded-10 bg-blue-80 text-white hover:bg-blue-60 transition text-normal-medium"
             >
               Logout
             </button>

@@ -1,3 +1,68 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .bg-navy-600 {
+    background-color: #2d5a8f;
+  }
+  .bg-navy-700 {
+    background-color: #1e3a5f;
+  }
+  .bg-navy-800 {
+    background-color: #15293f;
+  }
+  .bg-navy-900 {
+    background-color: #0c1a2f;
+  }
+  
+  .text-navy-600 {
+    color: #2d5a8f;
+  }
+  .text-navy-700 {
+    color: #1e3a5f;
+  }
+  .text-navy-800 {
+    color: #15293f;
+  }
+  .text-navy-900 {
+    color: #0c1a2f;
+  }
+  
+  .border-navy-600 {
+    border-color: #2d5a8f;
+  }
+  
+  .hover\:bg-navy-600:hover {
+    background-color: #2d5a8f;
+  }
+  .hover\:bg-navy-700:hover {
+    background-color: #1e3a5f;
+  }
+  .hover\:bg-navy-800:hover {
+    background-color: #15293f;
+  }
+  
+  .from-navy-600 {
+    --tw-gradient-from: #2d5a8f;
+  }
+  .from-navy-700 {
+    --tw-gradient-from: #1e3a5f;
+  }
+  .to-navy-600 {
+    --tw-gradient-to: #2d5a8f;
+  }
+  .to-navy-700 {
+    --tw-gradient-to: #1e3a5f;
+  }
+  .via-navy-600 {
+    --tw-gradient-via: #2d5a8f;
+  }
+  
+  .focus\:ring-navy-500:focus {
+    --tw-ring-color: #2d5a8f;
+  }
+  .focus\:border-navy-500:focus {
+    border-color: #2d5a8f;
+  }
+}
