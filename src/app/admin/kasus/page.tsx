@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RequireRole } from "@/app/components/RequireRole";
+import { RequireRole } from "@/components/RequireRole";
 
 type Korban = { id: number; nama: string };
 type Kasus = {

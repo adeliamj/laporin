@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
-import { RequireRole } from "@/app/components/RequireRole";
+import { RequireRole } from "@/components/RequireRole";
 
 type Kasus = {
   id: number;
