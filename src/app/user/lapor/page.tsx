@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { RequireRole } from "@/app/components/RequireRole";
+import { RequireRole } from "@/components/RequireRole";
 import Link from "next/link";
 
 export default function UserLaporPage() {

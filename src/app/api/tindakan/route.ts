@@ -1,7 +1,7 @@
 // app/api/tindakan/route.ts
 import { NextResponse } from "next/server";
-import pool from "@/app/lib/db";
-import prisma from "@/app/lib/db";
+import pool from "@/lib/db";
+import prisma from "@/lib/db";
 
 export async function GET(req: Request) {
   try {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import pool from "@/app/lib/db";
-import prisma from "@/app/lib/db";
+import pool from "@/lib/db";
+import prisma from "@/lib/db";
 
 // GET: ambil semua korban
 export async function GET() {
