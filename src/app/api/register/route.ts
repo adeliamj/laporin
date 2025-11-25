@@ -1,8 +1,8 @@
 // app/api/register/route.ts
 import { NextResponse } from "next/server";
-import pool from "@/app/lib/db";
+import pool from "@/lib/db";
 import bcrypt from "bcryptjs";
-import prisma from "@/app/lib/db";
+import prisma from "@/lib/db";
 
 export async function POST(req: Request) {
   try {

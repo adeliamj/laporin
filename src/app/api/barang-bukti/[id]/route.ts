@@ -1,7 +1,7 @@
 // app/api/barang-bukti/[id]/route.ts
 import { NextResponse } from "next/server";
-import pool from "@/app/lib/db";
-import prisma from "@/app/lib/db";
+import pool from "@/lib/db";
+import prisma from "@/lib/db";
 
 type Params = { params: { id: string } };
 
