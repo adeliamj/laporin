@@ -10,17 +10,25 @@
   },
   "dependencies": {
     "@next/font": "^14.2.15",
+    "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.554.0",
     "mysql2": "^3.15.3",
     "next": "^15.3.1",
     "next-auth": "^4.24.13",
+<<<<<<< HEAD
     "prisma": "^7.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+=======
+    "pg": "^8.16.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+>>>>>>> a7fa872bf870bca151301573f5b7e624b1051af7
     "react-leaflet": "^5.0.0",
     "tailwind-merge": "^3.3.0"
   },
@@ -30,13 +38,16 @@
     "@types/leaflet": "^1.9.17",
     "@types/next": "^8.0.7",
     "@types/node": "^20",
+    "@types/pg": "^8.15.6",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
     "postcss": "^8.5.3",
+    "prisma": "^7.0.0",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.20.6",
     "typescript": "^5"
   }
 }

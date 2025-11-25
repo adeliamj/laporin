@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import pool from "@/app/lib/db";
 import bcrypt from "bcryptjs";
+import prisma from "@/app/lib/db";
 
 export async function POST(req: Request) {
   try {
@@ -16,26 +17,53 @@ export async function POST(req: Request) {
     }
 
     // cek email sudah terdaftar
-    const [rows]: any = await pool.query(
-      "SELECT id FROM users WHERE email = ? LIMIT 1",
-      [email]
-    );
-    if (rows.length > 0) {
+    // const [rows]: any = await pool.query(
+    //   "SELECT id FROM users WHERE email = ? LIMIT 1",
+    //   [email]
+    // );
+    // if (rows.length > 0) {
+    //   return NextResponse.json(
+    //     { message: "Email sudah terdaftar" },
+    //     { status: 409 }
+    //   );
+    // }
+
+    const existingUser = await prisma.users.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
       return NextResponse.json(
-        { message: "Email sudah terdaftar" },
-        { status: 409 }
+        { error: "User already exists" },
+        { status: 400 }
       );
     }
 
     const password_hash = await bcrypt.hash(password, 10);
 
-    await pool.query(
-      "INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, 'user')",
-      [name, email, password_hash]
-    );
+    // await pool.query(
+    //   "INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, 'user')",
+    //   [name, email, password_hash]
+    // );
+
+    const user = await prisma.users.create({
+      data: {
+        name,
+        email,
+        password_hash,
+        role: "user",
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        created_at: true,
+      },
+    });
 
     return NextResponse.json(
-      { message: "Registrasi berhasil" },
+      { message: "Registrasi berhasil", user },
       { status: 201 }
     );
   } catch (err) {
