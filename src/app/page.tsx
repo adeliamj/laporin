@@ -3,6 +3,10 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import StatCard from "@/components/stat-card"
+import { AlertCircle, Users, FileText, Activity } from "lucide-react"
+import AnalyticsChart from "@/components/analytics-chart"
+import RecentActivityList from "@/components/recent-activity"
 
 type Stats = {
   totalKorban: number;
@@ -69,18 +73,46 @@ export default function DashboardPage() {
   }, [role]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Header */}
-        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-8 mt-5">
-          <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-8">
-            <p className="text-blue-200 text-sm font-medium mb-1">{greeting} {session?.user?.name}</p>
-            <h1 className="text-3xl font-bold text-blue-100 mb-3">
-              Dashboard Forensik Digital
-            </h1>
+        <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-2xl shadow-2xl border border-blue-700 overflow-hidden mb-8">
+          <div className="p-8">
+            <p className="text-blue-200 text-sm font-medium mb-2">Welcome back, {session?.user?.name}</p>
+            <h1 className="text-4xl font-bold text-white mb-2">Dashboard Forensik Digital</h1>
+            <p className="text-blue-200">Monitor dan analisis aktivitas sistem secara real-time</p>
           </div>
         </div>
 
+        {/* Key Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <StatCard title="Total Cases" value="24" change="+12%" trend="up" icon={<FileText className="w-5 h-5" />} />
+          <StatCard
+            title="Active Threats"
+            value="3"
+            change="-5%"
+            trend="down"
+            icon={<AlertCircle className="w-5 h-5" />}
+          />
+          <StatCard title="Team Members" value="12" change="+2" trend="up" icon={<Users className="w-5 h-5" />} />
+          <StatCard
+            title="System Status"
+            value="100%"
+            change="Healthy"
+            trend="stable"
+            icon={<Activity className="w-5 h-5" />}
+          />
+        </div>
+        {/* Main Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="lg:col-span-2">
+            <AnalyticsChart />
+          </div>
+          <div className="lg:col-span-1">
+            <RecentActivityList />
+          </div>
+        </div>
+        
         {/* Admin Dashboard */}
         {role === "admin" && (
           <div className="space-y-8">
