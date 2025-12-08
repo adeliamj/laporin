@@ -62,10 +62,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Kasus not found" }, { status: 404 });
     }
 
+    const tanggalISO = waktu_pelaksanaan? new Date(waktu_pelaksanaan + "T00:00:00.000Z"): null;
+
     const data = await prisma.tindakan_forensik.create({
       data: {
         kasus_id: kasus_id,
-        waktu_pelaksanaan: waktu_pelaksanaan,
+        waktu_pelaksanaan: tanggalISO,
         pec,
       },
     });

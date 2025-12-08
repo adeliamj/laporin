@@ -12,7 +12,7 @@ export default function RootLayout({
       <body className="bg-gray-50">
         <Providers>
           <Navbar />
-          <main className="w-full">{children}</main>
+          <main className="pt-20">{children}</main>
         </Providers>
       </body>
     </html>
