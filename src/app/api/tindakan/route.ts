@@ -1,9 +1,8 @@
 // app/api/tindakan/route.ts
 import { NextResponse } from "next/server";
-import pool from "@/lib/db";
 import prisma from "@/lib/db";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     // Ambil tindakan + info kasus
     // const [rows]: any = await pool.query(
@@ -64,6 +63,7 @@ export async function POST(req: Request) {
 
     const tanggalISO = waktu_pelaksanaan? new Date(waktu_pelaksanaan + "T00:00:00.000Z"): null;
 
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const data = await prisma.tindakan_forensik.create({
       data: {
         kasus_id: kasus_id,

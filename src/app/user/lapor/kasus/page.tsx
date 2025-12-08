@@ -83,7 +83,7 @@ function KasusPageInner() {
               </div>
               <div>
                 <p className="text-sm text-blue-200/90">
-                  Anda dapat melihat semua data kasus. Untuk melaporkan kasus baru, silakan gunakan menu "Buat Laporan".
+                  Anda dapat melihat semua data kasus. Untuk melaporkan kasus baru, silakan gunakan menu &quot;Buat Laporan&quot;.
                 </p>
               </div>
             </div>

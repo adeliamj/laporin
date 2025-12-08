@@ -1,15 +1,15 @@
 // app/api/korban/[id]/route.ts
 import { NextResponse } from "next/server";
-import pool from "@/lib/db";
 import prisma from "@/lib/db";
 
-type Params = { params: { id: string } };
+type Params = { params: Promise<{ id: string }> };
 
 // GET - Get single korban
 export async function GET(req: Request, { params }: Params) {
   try {
+    const { id } = await params;
     const data = await prisma.korban.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         kasus: true,
       },
@@ -32,7 +32,7 @@ export async function GET(req: Request, { params }: Params) {
 // UPDATE korban berdasarkan custom_id
 export async function PUT(req: Request, { params }: Params) {
   try {
-    const id = params.id; // misal P001
+    const { id } = await params;
     const body = await req.json();
     const { nama, kontak, alamat } = body;
 
@@ -65,6 +65,7 @@ export async function PUT(req: Request, { params }: Params) {
     //   [nama || null, kontak || null, alamat || null, id_int]
     // );
 
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const data = await prisma.korban.update({
       where: { id: id },
       data: {
@@ -87,7 +88,7 @@ export async function PUT(req: Request, { params }: Params) {
 // DELETE korban berdasarkan custom_id
 export async function DELETE(req: Request, { params }: Params) {
   try {
-    const id = params.id;
+    const { id } = await params;
 
     // Ambil id integer korban
     // const [rows]: any = await pool.query(

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
 import { RequireRole } from "@/components/RequireRole";
-import { FileText, Plus, Edit2, Trash2, Check, X } from "lucide-react";
+import { FileText, Plus, Edit2, Trash2, Check } from "lucide-react";
 
 type Korban = {
   id: number;

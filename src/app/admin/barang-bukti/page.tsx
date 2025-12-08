@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
@@ -54,7 +55,7 @@ function BarangBuktiPageInner() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSubmitting(true);
-    
+
     const payload = {
       ...form,
       kasus_id: form.kasus_id,
@@ -100,7 +101,7 @@ function BarangBuktiPageInner() {
         : "",
     });
     // Scroll to form
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleCancelEdit() {
@@ -138,7 +139,7 @@ function BarangBuktiPageInner() {
         </div>
 
         {/* Form Card */}
-        <div className="mb-8 animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+        <div className="mb-8 animate-fadeIn" style={{ animationDelay: "0.1s" }}>
           <div className="relative overflow-hidden rounded-2xl bg-[#0d1b36]/60 backdrop-blur-2xl border border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.35)]">
             {/* Glossy highlight */}
             <div className="absolute inset-0 pointer-events-none">
@@ -185,16 +186,32 @@ function BarangBuktiPageInner() {
                         required
                         className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-4 focus:ring-blue-500/40 appearance-none transition-all"
                       >
-                        <option value="" className="bg-slate-800">Pilih kasus yang terkait</option>
+                        <option value="" className="bg-slate-800">
+                          Pilih kasus yang terkait
+                        </option>
                         {kasusList.map((k) => (
-                          <option key={k.id} value={k.id} className="bg-slate-800">
+                          <option
+                            key={k.id}
+                            value={k.id}
+                            className="bg-slate-800"
+                          >
                             {k.jenis_kasus} (ID: {k.id})
                           </option>
                         ))}
                       </select>
                       <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <svg className="w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        <svg
+                          className="w-5 h-5 text-white/60"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
                         </svg>
                       </div>
                     </div>
@@ -254,9 +271,24 @@ function BarangBuktiPageInner() {
                   >
                     {submitting ? (
                       <>
-                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        <svg
+                          className="animate-spin h-5 w-5"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          />
                         </svg>
                         Menyimpan...
                       </>
@@ -274,7 +306,7 @@ function BarangBuktiPageInner() {
         </div>
 
         {/* Table Card */}
-        <div className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+        <div className="animate-fadeIn" style={{ animationDelay: "0.2s" }}>
           <div className="relative overflow-hidden rounded-2xl bg-[#0d1b36]/60 backdrop-blur-2xl border border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.35)]">
             {/* Glossy highlight */}
             <div className="absolute inset-0 pointer-events-none">
@@ -291,38 +323,74 @@ function BarangBuktiPageInner() {
             <div className="relative overflow-x-auto">
               {loading ? (
                 <div className="flex items-center justify-center py-16">
-                  <svg className="animate-spin h-10 w-10 text-blue-400" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  <svg
+                    className="animate-spin h-10 w-10 text-blue-400"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
                   </svg>
                 </div>
               ) : bbList.length === 0 ? (
                 <div className="text-center py-16">
                   <Package className="mx-auto h-16 w-16 text-white/30 mb-4" />
-                  <h3 className="text-lg font-medium text-white/80 mb-2">Belum ada data</h3>
-                  <p className="text-sm text-white/60">Mulai dengan menambahkan barang bukti pertama</p>
+                  <h3 className="text-lg font-medium text-white/80 mb-2">
+                    Belum ada data
+                  </h3>
+                  <p className="text-sm text-white/60">
+                    Mulai dengan menambahkan barang bukti pertama
+                  </p>
                 </div>
               ) : (
                 <table className="w-full">
                   <thead className="bg-white/5">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-blue-300 uppercase tracking-wider">ID</th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-blue-300 uppercase tracking-wider">Kasus</th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-blue-300 uppercase tracking-wider">Jenis Bukti</th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-blue-300 uppercase tracking-wider">Lokasi</th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-blue-300 uppercase tracking-wider">Waktu</th>
-                      <th className="px-6 py-4 text-center text-xs font-semibold text-blue-300 uppercase tracking-wider">Aksi</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-blue-300 uppercase tracking-wider">
+                        ID
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-blue-300 uppercase tracking-wider">
+                        Kasus
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-blue-300 uppercase tracking-wider">
+                        Jenis Bukti
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-blue-300 uppercase tracking-wider">
+                        Lokasi
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-blue-300 uppercase tracking-wider">
+                        Waktu
+                      </th>
+                      <th className="px-6 py-4 text-center text-xs font-semibold text-blue-300 uppercase tracking-wider">
+                        Aksi
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/10">
                     {bbList.map((b) => (
-                      <tr key={b.id} className="hover:bg-white/5 transition-colors duration-200">
+                      <tr
+                        key={b.id}
+                        className="hover:bg-white/5 transition-colors duration-200"
+                      >
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-blue-300">
                           #{b.id}
                         </td>
                         <td className="px-6 py-4 text-sm text-white/90">
                           <div className="font-medium">{b.jenis_kasus}</div>
-                          <div className="text-xs text-white/60">ID: {b.kasus_id}</div>
+                          <div className="text-xs text-white/60">
+                            ID: {b.kasus_id}
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80">
                           {b.jenis_bukti}
@@ -332,7 +400,9 @@ function BarangBuktiPageInner() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80">
                           {b.waktu_penyimpanan
-                            ? new Date(b.waktu_penyimpanan).toLocaleDateString('id-ID')
+                            ? new Date(b.waktu_penyimpanan).toLocaleDateString(
+                                "id-ID"
+                              )
                             : "-"}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
@@ -365,8 +435,14 @@ function BarangBuktiPageInner() {
 
       <style jsx global>{`
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(24px) scale(0.97); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
+          from {
+            opacity: 0;
+            transform: translateY(24px) scale(0.97);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
         }
         .animate-fadeIn {
           animation: fadeIn 0.7s ease-out forwards;
