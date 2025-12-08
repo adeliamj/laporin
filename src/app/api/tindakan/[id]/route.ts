@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
-type Params = { params: { id: string } };
+type Params = { params: Promise<{ id: string }> };
 
 // GET - Get single tindakan forensik
 export async function GET(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     const tindakan = await prisma.tindakan_forensik.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         kasus: true,
       },
@@ -33,11 +34,12 @@ export async function GET(request: Request, { params }: Params) {
 // PUT - Update tindakan forensik
 export async function PUT(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { waktu_pelaksanaan, pec } = body;
 
     const tindakan = await prisma.tindakan_forensik.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         waktu_pelaksanaan: waktu_pelaksanaan
           ? new Date(waktu_pelaksanaan)
@@ -63,8 +65,9 @@ export async function PUT(request: Request, { params }: Params) {
 // DELETE - Delete tindakan forensik
 export async function DELETE(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     await prisma.tindakan_forensik.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(

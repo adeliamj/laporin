@@ -1,5 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
-import pool from "@/lib/db";
+import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
 // GET: ambil semua kasus beserta nama korban

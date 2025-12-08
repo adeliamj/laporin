@@ -1,4 +1,4 @@
-// app/_app.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 

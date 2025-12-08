@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // ============================================
 // FILE 2: AnalyticsChart.tsx
 // Path: src/components/analytics-chart.tsx

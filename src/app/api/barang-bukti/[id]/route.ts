@@ -1,15 +1,15 @@
 // app/api/barang-bukti/[id]/route.ts
 import { NextResponse } from "next/server";
-import pool from "@/lib/db";
 import prisma from "@/lib/db";
 
-type Params = { params: { id: string } };
+type Params = { params: Promise<{ id: string }> };
 
 // GET single barang bukti
-export async function GET(req: Request, { params }: Params) {
+export async function GET(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     const barangBukti = await prisma.barang_bukti.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         kasus: true,
       },
@@ -74,11 +74,12 @@ export async function PUT(req: Request, { params }: Params) {
   // return NextResponse.json({ message: "Barang bukti updated" });
 
   try {
+    const { id } = await params;
     const body = await req.json();
     const { jenis_bukti, lokasi_penyimpanan, waktu_penyimpanan } = body;
 
     const barangBukti = await prisma.barang_bukti.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         jenis_bukti,
         lokasi_penyimpanan,
@@ -122,8 +123,9 @@ export async function DELETE(req: Request, { params }: Params) {
   // return NextResponse.json({ message: "Barang bukti deleted" });
 
   try {
+    const { id } = await params;
     await prisma.barang_bukti.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(
