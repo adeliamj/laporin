@@ -66,12 +66,14 @@ export async function POST(req: Request) {
     //   ]
     // );
 
+    const tanggalISO = tanggal_kejadian? new Date(tanggal_kejadian + "T00:00:00.000Z"): null;
+
     const kasus = await prisma.kasus.create({
       data: {
         korban_id: korban_id || null,
         korban_terkait: korban_terkait || null,
         jenis_kasus,
-        tanggal_kejadian: tanggal_kejadian || null,
+        tanggal_kejadian: tanggalISO || null,
         ringkasan,
         status_kasus: "open",
       },

@@ -1,12 +1,14 @@
+// ============================================
+// FILE 1: DashboardPage.tsx - Main Dashboard (TypeScript Fixed)
+// ============================================
 "use client";
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import StatCard from "@/components/stat-card"
-import { AlertCircle, Users, FileText, Activity } from "lucide-react"
-import AnalyticsChart from "@/components/analytics-chart"
-import RecentActivityList from "@/components/recent-activity"
+import { AlertCircle, Users, FileText, Activity, Package, ClipboardList, ArrowRight, Plus, Eye, Mail } from "lucide-react";
+import AnalyticsChart from "@/components/analytics-chart";
+import RecentActivityList from "@/components/recent-activity";
 
 type Stats = {
   totalKorban: number;
@@ -14,6 +16,130 @@ type Stats = {
   totalBarangBukti: number;
   totalTindakan: number;
 };
+
+type ColorType = "blue" | "purple" | "green" | "orange";
+
+interface StatCardProps {
+  title: string;
+  value: number;
+  icon: React.ReactNode;
+  color?: ColorType;
+}
+
+interface QuickAccessCardProps {
+  href: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  color?: ColorType;
+}
+
+function StatCard({ title, value, icon, color = "blue" }: StatCardProps) {
+  const colorClasses: Record<ColorType, string> = {
+    blue: "from-blue-500/20 to-blue-600/20 border-blue-500/30",
+    purple: "from-purple-500/20 to-purple-600/20 border-purple-500/30",
+    green: "from-green-500/20 to-green-600/20 border-green-500/30",
+    orange: "from-orange-500/20 to-orange-600/20 border-orange-500/30"
+  };
+
+  const iconColorClasses: Record<ColorType, string> = {
+    blue: "text-blue-400",
+    purple: "text-purple-400",
+    green: "text-green-400",
+    orange: "text-orange-400"
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-xl bg-[#0d1b36]/60 backdrop-blur-xl border border-white/10 p-6 hover:border-white/20 transition-all duration-300 group">
+      <div className={`absolute inset-0 bg-gradient-to-br ${colorClasses[color]} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+      <div className="relative">
+        <div className="flex items-center justify-between mb-4">
+          <div className={`p-3 rounded-lg bg-white/5 ${iconColorClasses[color]} group-hover:scale-110 transition-transform duration-300`}>
+            {icon}
+          </div>
+        </div>
+        <h3 className="text-sm font-medium text-white/60 mb-1">{title}</h3>
+        <p className="text-3xl font-bold text-white">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function QuickAccessCard({ href, title, description, icon, color = "blue" }: QuickAccessCardProps) {
+  type ColorStyles = {
+    bg: string;
+    border: string;
+    hoverBorder: string;
+    iconBg: string;
+    iconText: string;
+    hoverIconBg: string;
+    titleHover: string;
+  };
+
+  const colorClasses: Record<ColorType, ColorStyles> = {
+    blue: {
+      bg: "from-blue-500/10 to-blue-600/10",
+      border: "border-blue-500/30",
+      hoverBorder: "hover:border-blue-400/60",
+      iconBg: "bg-blue-500/20",
+      iconText: "text-blue-400",
+      hoverIconBg: "group-hover:bg-blue-500/30",
+      titleHover: "group-hover:text-blue-400"
+    },
+    purple: {
+      bg: "from-purple-500/10 to-purple-600/10",
+      border: "border-purple-500/30",
+      hoverBorder: "hover:border-purple-400/60",
+      iconBg: "bg-purple-500/20",
+      iconText: "text-purple-400",
+      hoverIconBg: "group-hover:bg-purple-500/30",
+      titleHover: "group-hover:text-purple-400"
+    },
+    green: {
+      bg: "from-green-500/10 to-green-600/10",
+      border: "border-green-500/30",
+      hoverBorder: "hover:border-green-400/60",
+      iconBg: "bg-green-500/20",
+      iconText: "text-green-400",
+      hoverIconBg: "group-hover:bg-green-500/30",
+      titleHover: "group-hover:text-green-400"
+    },
+    orange: {
+      bg: "from-orange-500/10 to-orange-600/10",
+      border: "border-orange-500/30",
+      hoverBorder: "hover:border-orange-400/60",
+      iconBg: "bg-orange-500/20",
+      iconText: "text-orange-400",
+      hoverIconBg: "group-hover:bg-orange-500/30",
+      titleHover: "group-hover:text-orange-400"
+    }
+  };
+
+  const colors = colorClasses[color];
+
+  return (
+    <Link href={href} className={`group relative overflow-hidden rounded-xl bg-gradient-to-br ${colors.bg} backdrop-blur-xl border ${colors.border} ${colors.hoverBorder} p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]`}>
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      
+      <div className="relative flex items-center gap-4">
+        <div className={`p-4 ${colors.iconBg} ${colors.hoverIconBg} rounded-xl transition-all duration-300`}>
+          <div className={colors.iconText}>
+            {icon}
+          </div>
+        </div>
+        
+        <div className="flex-1">
+          <h3 className={`text-lg font-bold text-white mb-1 ${colors.titleHover} transition-colors duration-300`}>
+            {title}
+          </h3>
+          <p className="text-sm text-white/60">{description}</p>
+        </div>
+        
+        <ArrowRight className={`w-6 h-6 text-white/40 ${colors.iconText} group-hover:translate-x-1 transition-all duration-300`} />
+      </div>
+    </Link>
+  );
+}
 
 export default function DashboardPage() {
   const { data: session } = useSession();
@@ -24,6 +150,7 @@ export default function DashboardPage() {
     totalBarangBukti: 0,
     totalTindakan: 0,
   });
+  const [timeline, setTimeline] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [greeting, setGreeting] = useState("");
 
@@ -38,18 +165,20 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const [korbanRes, kasusRes, bbRes, tindakanRes] = await Promise.all([
+        const [korbanRes, kasusRes, bbRes, tindakanRes, timelineRes] = await Promise.all([
           fetch("/api/korban"),
           fetch("/api/kasus"),
           fetch("/api/barang-bukti"),
           fetch("/api/tindakan"),
+          fetch("/api/stats/timeline").catch(() => ({ json: () => Promise.resolve([]) })),
         ]);
 
-        const [korban, kasus, bb, tindakan] = await Promise.all([
+        const [korban, kasus, bb, tindakan, timelineData] = await Promise.all([
           korbanRes.json(),
           kasusRes.json(),
           bbRes.json(),
           tindakanRes.json(),
+          timelineRes.json(),
         ]);
 
         setStats({
@@ -58,6 +187,8 @@ export default function DashboardPage() {
           totalBarangBukti: bb.length || 0,
           totalTindakan: tindakan.length || 0,
         });
+        
+        setTimeline(timelineData || []);
       } catch (error) {
         console.error("Error fetching stats:", error);
       } finally {
@@ -73,202 +204,123 @@ export default function DashboardPage() {
   }, [role]);
 
   return (
-     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a1a33] via-[#0f2242] to-[#0a1a33]">
+      {/* Soft Glow Effects */}
+      <div className="absolute top-[-120px] left-[-80px] w-[300px] h-[300px] bg-blue-600 opacity-25 blur-[150px] rounded-full"></div>
+      <div className="absolute bottom-[-120px] right-[-80px] w-[300px] h-[300px] bg-indigo-500 opacity-25 blur-[150px] rounded-full"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-blue-500 opacity-15 blur-[180px] rounded-full"></div>
+
+      <div className="relative z-10 max-w-7xl mx-auto p-6">
         {/* Welcome Header */}
-        <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-2xl shadow-2xl border border-blue-700 overflow-hidden mb-8">
-          <div className="p-8">
-            <p className="text-blue-200 text-sm font-medium mb-2">Welcome back, {session?.user?.name}</p>
-            <h1 className="text-4xl font-bold text-white mb-2">Dashboard Forensik Digital</h1>
-            <p className="text-blue-200">Monitor dan analisis aktivitas sistem secara real-time</p>
+        <div className="mb-8 animate-fadeIn">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600/20 to-indigo-600/20 backdrop-blur-xl border border-blue-500/30 p-8 shadow-[0_8px_40px_rgba(0,0,0,0.35)]">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+            <div className="relative">
+              <p className="text-blue-300 text-sm font-medium mb-2">{greeting}, {session?.user?.name}</p>
+              <h1 className="text-4xl font-bold text-white mb-2">Dashboard Forensik Digital</h1>
+              <p className="text-blue-200/80">Monitor dan analisis aktivitas sistem secara real-time</p>
+            </div>
           </div>
         </div>
 
-        {/* Key Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard title="Total Cases" value="24" change="+12%" trend="up" icon={<FileText className="w-5 h-5" />} />
-          <StatCard
-            title="Active Threats"
-            value="3"
-            change="-5%"
-            trend="down"
-            icon={<AlertCircle className="w-5 h-5" />}
-          />
-          <StatCard title="Team Members" value="12" change="+2" trend="up" icon={<Users className="w-5 h-5" />} />
-          <StatCard
-            title="System Status"
-            value="100%"
-            change="Healthy"
-            trend="stable"
-            icon={<Activity className="w-5 h-5" />}
-          />
-        </div>
-        {/* Main Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-2">
-            <AnalyticsChart />
-          </div>
-          <div className="lg:col-span-1">
-            <RecentActivityList />
-          </div>
-        </div>
-        
         {/* Admin Dashboard */}
         {role === "admin" && (
           <div className="space-y-8">
-            {/* Statistics */}
-            <div>
-              <h2 className="text-2xl font-bold text-slate-800 mb-4">Statistik Sistem</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {/* Korban */}
-                <div className="bg-white rounded-xl shadow-md border-2 border-blue-200 p-6 hover:shadow-xl transition-shadow">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-blue-500 rounded-xl shadow-lg">
-                      <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                    </div>
-                  </div>
-                  <h3 className="text-slate-600 text-sm font-semibold mb-2">Total Korban</h3>
-                  {loading ? (
-                    <div className="h-9 w-20 bg-slate-200 animate-pulse rounded"></div>
-                  ) : (
-                    <p className="text-4xl font-bold text-slate-800">{stats.totalKorban}</p>
-                  )}
-                </div>
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+              <StatCard 
+                title="Total Korban" 
+                value={stats.totalKorban} 
+                icon={<Users className="w-6 h-6" />}
+                color="blue"
+              />
+              <StatCard 
+                title="Total Kasus" 
+                value={stats.totalKasus} 
+                icon={<FileText className="w-6 h-6" />}
+                color="purple"
+              />
+              <StatCard 
+                title="Barang Bukti" 
+                value={stats.totalBarangBukti} 
+                icon={<Package className="w-6 h-6" />}
+                color="green"
+              />
+              <StatCard 
+                title="Tindakan Forensik" 
+                value={stats.totalTindakan} 
+                icon={<ClipboardList className="w-6 h-6" />}
+                color="orange"
+              />
+            </div>
 
-                {/* Kasus */}
-                <div className="bg-white rounded-xl shadow-md border-2 border-purple-200 p-6 hover:shadow-xl transition-shadow">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-purple-500 rounded-xl shadow-lg">
-                      <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                  </div>
-                  <h3 className="text-slate-600 text-sm font-semibold mb-2">Total Kasus</h3>
-                  {loading ? (
-                    <div className="h-9 w-20 bg-slate-200 animate-pulse rounded"></div>
-                  ) : (
-                    <p className="text-4xl font-bold text-slate-800">{stats.totalKasus}</p>
-                  )}
-                </div>
-
-                {/* Barang Bukti */}
-                <div className="bg-white rounded-xl shadow-md border-2 border-green-200 p-6 hover:shadow-xl transition-shadow">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-green-500 rounded-xl shadow-lg">
-                      <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                      </svg>
-                    </div>
-                  </div>
-                  <h3 className="text-slate-600 text-sm font-semibold mb-2">Barang Bukti</h3>
-                  {loading ? (
-                    <div className="h-9 w-20 bg-slate-200 animate-pulse rounded"></div>
-                  ) : (
-                    <p className="text-4xl font-bold text-slate-800">{stats.totalBarangBukti}</p>
-                  )}
-                </div>
-
-                {/* Tindakan */}
-                <div className="bg-white rounded-xl shadow-md border-2 border-orange-200 p-6 hover:shadow-xl transition-shadow">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-orange-500 rounded-xl shadow-lg">
-                      <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                      </svg>
-                    </div>
-                  </div>
-                  <h3 className="text-slate-600 text-sm font-semibold mb-2">Tindakan Forensik</h3>
-                  {loading ? (
-                    <div className="h-9 w-20 bg-slate-200 animate-pulse rounded"></div>
-                  ) : (
-                    <p className="text-4xl font-bold text-slate-800">{stats.totalTindakan}</p>
-                  )}
-                </div>
+            {/* Analytics & Recent Activity */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fadeIn" style={{ animationDelay: '0.15s' }}>
+              <div className="lg:col-span-2">
+                <AnalyticsChart stats={stats} timeline={timeline} />
+              </div>
+              <div className="lg:col-span-1">
+                <RecentActivityList />
               </div>
             </div>
 
-            {/* Quick Actions */}
-            <div>
-              <h2 className="text-2xl font-bold text-slate-800 mb-4">Akses Cepat</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Link href="/admin/korban" className="group bg-white rounded-xl shadow-md border-2 border-slate-200 p-6 hover:shadow-xl hover:border-blue-300 transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="p-4 bg-blue-100 rounded-xl group-hover:bg-blue-500 transition-all">
-                      <svg className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-1">
-                        Kelola Korban
-                      </h3>
-                      <p className="text-sm text-slate-500">Data korban kasus</p>
-                    </div>
-                    <svg className="w-6 h-6 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </Link>
+            {/* Quick Access */}
+            <div className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-white mb-2">Akses Cepat</h2>
+                <p className="text-blue-200/70">Kelola data sistem dengan mudah</p>
+              </div>
 
-                <Link href="/admin/kasus" className="group bg-white rounded-xl shadow-md border-2 border-slate-200 p-6 hover:shadow-xl hover:border-purple-300 transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="p-4 bg-purple-100 rounded-xl group-hover:bg-purple-500 transition-all">
-                      <svg className="w-8 h-8 text-purple-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-bold text-slate-800 group-hover:text-purple-600 transition-colors mb-1">
-                        Kelola Kasus
-                      </h3>
-                      <p className="text-sm text-slate-500">Daftar kasus forensik</p>
-                    </div>
-                    <svg className="w-6 h-6 text-slate-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </Link>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <QuickAccessCard
+                  href="/admin/korban"
+                  title="Kelola Korban"
+                  description="Data korban kasus"
+                  icon={<Users className="w-8 h-8" />}
+                  color="blue"
+                />
+                <QuickAccessCard
+                  href="/admin/kasus"
+                  title="Kelola Kasus"
+                  description="Daftar kasus forensik"
+                  icon={<FileText className="w-8 h-8" />}
+                  color="purple"
+                />
+                <QuickAccessCard
+                  href="/admin/barang-bukti"
+                  title="Barang Bukti"
+                  description="Kelola barang bukti"
+                  icon={<Package className="w-8 h-8" />}
+                  color="green"
+                />
+                <QuickAccessCard
+                  href="/admin/tindakan"
+                  title="Tindakan Forensik"
+                  description="Log tindakan"
+                  icon={<ClipboardList className="w-8 h-8" />}
+                  color="orange"
+                />
+              </div>
+            </div>
 
-                <Link href="/admin/barang-bukti" className="group bg-white rounded-xl shadow-md border-2 border-slate-200 p-6 hover:shadow-xl hover:border-green-300 transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="p-4 bg-green-100 rounded-xl group-hover:bg-green-500 transition-all">
-                      <svg className="w-8 h-8 text-green-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-bold text-slate-800 group-hover:text-green-600 transition-colors mb-1">
-                        Barang Bukti
-                      </h3>
-                      <p className="text-sm text-slate-500">Kelola barang bukti</p>
-                    </div>
-                    <svg className="w-6 h-6 text-slate-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+            {/* Tips Card */}
+            <div className="animate-fadeIn" style={{ animationDelay: '0.3s' }}>
+              <div className="relative overflow-hidden rounded-xl bg-[#0d1b36]/60 backdrop-blur-xl border border-white/10 p-6">
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute top-0 left-0 right-0 h-[80px] bg-gradient-to-b from-white/5 to-transparent opacity-50"></div>
+                </div>
+                
+                <div className="relative flex items-start gap-4">
+                  <div className="p-3 bg-blue-500/20 rounded-lg flex-shrink-0">
+                    <AlertCircle className="w-6 h-6 text-blue-400" />
                   </div>
-                </Link>
-
-                <Link href="/admin/tindakan" className="group bg-white rounded-xl shadow-md border-2 border-slate-200 p-6 hover:shadow-xl hover:border-orange-300 transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="p-4 bg-orange-100 rounded-xl group-hover:bg-orange-500 transition-all">
-                      <svg className="w-8 h-8 text-orange-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-bold text-slate-800 group-hover:text-orange-600 transition-colors mb-1">
-                        Tindakan Forensik
-                      </h3>
-                      <p className="text-sm text-slate-500">Log tindakan</p>
-                    </div>
-                    <svg className="w-6 h-6 text-slate-400 group-hover:text-orange-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-2">Tips Pengelolaan</h3>
+                    <p className="text-sm text-white/70 leading-relaxed">
+                      Pastikan data barang bukti dan tindakan forensik selalu ter-update untuk menjaga integritas investigasi.
+                    </p>
                   </div>
-                </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -277,67 +329,61 @@ export default function DashboardPage() {
         {/* User Dashboard */}
         {role === "user" && (
           <div className="space-y-6">
-            {/* Hero Card dengan Tombol Laporan */}
-            <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-8 text-blue-100">
-                <h2 className="text-2xl font-bold mb-2">Butuh Bantuan?</h2>
-                <p className="text-blue-100 mb-6">
-                  Laporkan kasus forensik digital Anda kepada kami. Tim kami siap membantu.
-                </p>
-                <Link
-                  href="/user/lapor"
-                  className="inline-flex items-center gap-3 px-8 py-4 text-blue-100 font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                  Buat Laporan Baru
-                </Link>
+            {/* Hero Card */}
+            <div className="animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600/20 to-indigo-600/20 backdrop-blur-xl border border-blue-500/30 p-8 shadow-[0_8px_40px_rgba(0,0,0,0.35)]">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+                <div className="relative">
+                  <h2 className="text-2xl font-bold text-white mb-2">Butuh Bantuan?</h2>
+                  <p className="text-blue-200/80 mb-6">
+                    Laporkan kasus forensik digital Anda kepada kami. Tim kami siap membantu.
+                  </p>
+                  <Link
+                    href="/user/lapor"
+                    className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-all duration-200"
+                  >
+                    <Plus className="w-6 h-6" />
+                    Buat Laporan Baru
+                  </Link>
+                </div>
               </div>
             </div>
 
-            {/* Info Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Lihat Kasus */}
-              <Link href="/user/kasus" className="group bg-white rounded-xl shadow-md border-2 border-slate-200 p-6 hover:shadow-xl hover:border-blue-300 transition-all">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-blue-100 rounded-xl group-hover:bg-blue-500 transition-all">
-                    <svg className="w-8 h-8 text-blue-100 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
+            {/* Action Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+              <Link href="/user/lapor/kasus" className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-600/10 backdrop-blur-xl border border-blue-500/30 hover:border-blue-400/60 p-6 transition-all duration-300 hover:scale-[1.02]">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative flex items-start gap-4">
+                  <div className="p-3 bg-blue-500/20 rounded-xl group-hover:bg-blue-500/30 transition-all">
+                    <Eye className="w-8 h-8 text-blue-400" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-2">
+                    <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors mb-2">
                       Lihat Daftar Kasus
                     </h3>
-                    <p className="text-sm text-slate-600">
-                      Akses read-only untuk melihat data kasus yang ada
+                    <p className="text-sm text-white/70">
+                      Akses untuk melihat data kasus yang ada
                     </p>
                   </div>
-                  <svg className="w-6 h-6 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+                  <ArrowRight className="w-6 h-6 text-white/40 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
 
-              {/* Info Help */}
-              <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl shadow-md border-2 border-amber-200 p-6">
+              <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 backdrop-blur-xl border border-amber-500/30 p-6">
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-amber-500 rounded-xl">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                  <div className="p-3 bg-amber-500/20 rounded-xl flex-shrink-0">
+                    <AlertCircle className="w-8 h-8 text-amber-400" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-slate-800 mb-2">
+                    <h3 className="text-lg font-bold text-white mb-2">
                       Perlu Akses Lebih?
                     </h3>
-                    <p className="text-sm text-slate-600 mb-3">
-                      Hubungi administrator untuk upgrade ke akses penuh
+                    <p className="text-sm text-white/70 mb-3">
+                      Hubungi administrator untuk upgrade
                     </p>
-                    <a href="mailto:admin@forensik.id" className="text-sm text-amber-600 font-semibold hover:text-amber-700">
-                      admin@forensik.id →
+                    <a href="mailto:admin@forensik.id" className="inline-flex items-center gap-2 text-sm text-amber-400 font-semibold hover:text-amber-300 transition-colors">
+                      <Mail className="w-4 h-4" />
+                      admin@forensik.id
                     </a>
                   </div>
                 </div>
@@ -346,6 +392,16 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(24px) scale(0.97); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.7s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 }
